@@ -8,6 +8,7 @@
 
 import CoreData
 import SwiftUI
+import CoreLocation
 
 struct DetailView: View {
     let pizzaPlace: PizzaPlace
@@ -16,8 +17,9 @@ struct DetailView: View {
         GeometryReader { geometry in
             VStack{
                 ZStack(alignment: .bottomTrailing) {
-                    Image(self.pizzaPlace.city ?? "Burlington")
-                        .frame(maxWidth: geometry.size.width)
+                    MapView(coordinate: getCoords(city: self.pizzaPlace.city ?? "Burlington"))
+                                    .edgesIgnoringSafeArea(.top)
+                                    .frame(height: 300)
                     Text(self.pizzaPlace.city?.uppercased() ?? "BURLINGTON")
                         .font(.caption)
                         .fontWeight(.black)
@@ -54,5 +56,20 @@ struct DetailView_Previews: PreviewProvider {
             DetailView(pizzaPlace: pizzaPlace)
         }
         
+    }
+}
+
+func getCoords(city: String) -> CLLocationCoordinate2D{
+    switch  city{
+    case "Burlington":
+        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+    case "South Burlington":
+        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+    case "Winooski":
+        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+    case "Essex":
+        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+    default :
+        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
     }
 }
