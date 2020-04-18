@@ -13,7 +13,30 @@ struct DetailView: View {
     let pizzaPlace: PizzaPlace
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        GeometryReader { geometry in
+            VStack{
+                ZStack(alignment: .bottomTrailing) {
+                    Image(self.pizzaPlace.city ?? "Burlington")
+                        .frame(maxWidth: geometry.size.width)
+                    Text(self.pizzaPlace.city?.uppercased() ?? "BURLINGTON")
+                        .font(.caption)
+                        .fontWeight(.black)
+                        .padding(8)
+                        .foregroundColor(.white)
+                        .background(Color.black.opacity(0.75))
+                        .clipShape(Capsule())
+                        .offset(x: -5, y: -5)
+                }
+                RatingView(rating: .constant(Int(self.pizzaPlace.rating)))
+                    .font(.largeTitle)
+                    .padding()
+                PriceView(price: .constant(Int(self.pizzaPlace.price)))
+                .font(.largeTitle)
+                Text(self.pizzaPlace.review ?? "No Review")
+                    .padding()
+            }
+        }
+        .navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
     }
 }
 

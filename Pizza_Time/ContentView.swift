@@ -19,7 +19,7 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(places, id: \.self) { place in
-                    NavigationLink(destination: Text(place.name ?? "Unknown Name")) {
+                    NavigationLink(destination: DetailView(pizzaPlace: place)) {
                         EmojiView(rating: place.rating)
                             .font(.largeTitle)
                         
@@ -30,10 +30,21 @@ struct ContentView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                }.onDelete{ IndexSet in
+                    let deleteItem = self.places[IndexSet.first ?? 0]
+                    self.moc.delete(deleteItem)
+                    
+                    do{
+                        try self.moc.save()
+                    } catch {
+                        print(error)
+                    }
+                    
                 }
             }
             .navigationBarTitle("Pizza Places")
-            .navigationBarItems(trailing:
+            .navigationBarItems(
+                leading: EditButton(),trailing:
                 Button(action: {
                     self.showingAddScreen.toggle()
                 }) {
@@ -46,6 +57,7 @@ struct ContentView: View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
