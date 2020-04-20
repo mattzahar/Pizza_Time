@@ -18,6 +18,10 @@ struct AddPizzaPlace: View {
     @State private var rating = 3
     @State private var review = ""
     
+    @State private var image: Image?
+    @State private var showingImagePicker = false
+    @State private var inputImage: UIImage?
+    
     var cities = ["Burlington", "South Burlington", "Winooski", "Essex"]
 
     var body: some View {
@@ -37,6 +41,13 @@ struct AddPizzaPlace: View {
                     PriceView(price: $price)
                     RatingView(rating: $rating)
                     TextField("Review", text: $review)
+                    
+                    Button(action: {
+                        self.showingImagePicker = true
+                        
+                    }) {
+                        Image(systemName: "photo.fill")
+                    }
                 }
                 
                 Section {
@@ -60,6 +71,12 @@ struct AddPizzaPlace: View {
             }.navigationBarTitle(Text("New Pizza"))
         }
     }
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        image = Image(uiImage: inputImage)
+    }
+    
 }
 
 struct AddPizzaPlace_Previews: PreviewProvider {

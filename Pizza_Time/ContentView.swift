@@ -42,8 +42,6 @@ struct ContentView: View {
                         print(error)
                     }
                 }
-                .onMove(perform: move)
-                
             }
             .navigationBarTitle("Pizza Places")
             .navigationBarItems(
@@ -59,9 +57,6 @@ struct ContentView: View {
             }
         }
     }
-        func move(indexSet: IndexSet, destination: Int) {
-            
-        }
 }
 
 
