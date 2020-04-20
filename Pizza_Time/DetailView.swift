@@ -14,31 +14,26 @@ struct DetailView: View {
     let pizzaPlace: PizzaPlace
     
     var body: some View {
-        GeometryReader { geometry in
             VStack{
-                ZStack(alignment: .bottomTrailing) {
                     MapView(coordinate: getCoords(city: self.pizzaPlace.city ?? "Burlington"))
                                     .edgesIgnoringSafeArea(.top)
                                     .frame(height: 300)
-                    Text(self.pizzaPlace.city?.uppercased() ?? "BURLINGTON")
-                        .font(.caption)
-                        .fontWeight(.black)
-                        .padding(8)
-                        .foregroundColor(.white)
-                        .background(Color.black.opacity(0.75))
-                        .clipShape(Capsule())
-                        .offset(x: -5, y: -5)
-                }
-                RatingView(rating: .constant(Int(self.pizzaPlace.rating)))
-                    .font(.largeTitle)
-                    .padding()
-                PriceView(price: .constant(Int(self.pizzaPlace.price)))
-                .font(.largeTitle)
-                Text(self.pizzaPlace.review ?? "No Review")
-                    .padding()
-            }
-        }
-        .navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
+                    Image("pizza")
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                        .shadow(radius: 12)
+                        .offset(x: 0, y: -130)
+                        .padding(.bottom, -130)
+                    VStack(alignment: .center) {
+                        RatingView(rating: .constant(Int(self.pizzaPlace.rating)))
+                            .font(.largeTitle)
+                            .padding()
+                        PriceView(price: .constant(Int(self.pizzaPlace.price)))
+                        .font(.largeTitle)
+                        Text(self.pizzaPlace.review ?? "No Review")
+                            .padding()
+                    }
+            }.navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
     }
 }
 

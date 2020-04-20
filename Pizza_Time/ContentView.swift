@@ -10,7 +10,9 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(entity: PizzaPlace.entity(), sortDescriptors: [])
+    @FetchRequest(entity: PizzaPlace.entity(), sortDescriptors: [
+        NSSortDescriptor(keyPath: \PizzaPlace.rating, ascending: true),
+    ])
     var places: FetchedResults<PizzaPlace>
     
     @State private var showingAddScreen = false
@@ -39,8 +41,9 @@ struct ContentView: View {
                     } catch {
                         print(error)
                     }
-                    
                 }
+                .onMove(perform: move)
+                
             }
             .navigationBarTitle("Pizza Places")
             .navigationBarItems(
@@ -56,6 +59,9 @@ struct ContentView: View {
             }
         }
     }
+        func move(indexSet: IndexSet, destination: Int) {
+            
+        }
 }
 
 
@@ -64,3 +70,5 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
