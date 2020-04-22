@@ -1,5 +1,5 @@
 //
-//  imagePicker.swift
+//  ImagePicker.swift
 //  Pizza_Time
 //
 //  Created by Matthew Zahar on 4/20/20.
@@ -8,38 +8,36 @@
 
 import SwiftUI
 
-struct imagePicker: UIViewControllerRepresentable {
+struct ImagePicker: UIViewControllerRepresentable {
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        let parent: imagePicker
+        let parent: ImagePicker
         
-        init(_ parent: imagePicker){
+        init(_ parent: ImagePicker){
             self.parent = parent
         }
-        
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
+            if let uiImage = info[.originalImage] as? UIImage
+            {
                 parent.image = uiImage
             }
-            
             parent.presentationMode.wrappedValue.dismiss()
         }
-    
     }
+    
     @Environment(\.presentationMode) var presentationMode
-    @Binding var image: UIImage
+    @Binding var image: UIImage?
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
     
-    func makeUIViewController(context:UIViewControllerRepresentableContext<imagePicker>) -> UIImagePickerController{
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) ->  UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         return picker
     }
     
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<imagePicker>)
-    {
-        
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
+
     }
 }

@@ -13,27 +13,41 @@ import CoreLocation
 struct DetailView: View {
     let pizzaPlace: PizzaPlace
     
+    @State private var image : Data = .init(count: 0)
+    
     var body: some View {
             VStack{
-                    MapView(coordinate: getCoords(city: self.pizzaPlace.city ?? "Burlington"))
+                MapView(coordinate: getCoords(city: self.pizzaPlace.city ?? "Burlington"))
                                     .edgesIgnoringSafeArea(.top)
                                     .frame(height: 300)
-                    Image("pizza")
+
+                    
+                Image(uiImage: (UIImage(data: self.pizzaPlace.imageD!)!))
+                        .resizable()
+                        .scaledToFit()
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.white, lineWidth: 4))
                         .shadow(radius: 12)
                         .offset(x: 0, y: -130)
                         .padding(.bottom, -130)
+                
                     VStack(alignment: .center) {
                         RatingView(rating: .constant(Int(self.pizzaPlace.rating)))
                             .font(.largeTitle)
                             .padding()
                         PriceView(price: .constant(Int(self.pizzaPlace.price)))
                         .font(.largeTitle)
-                        Text(self.pizzaPlace.review ?? "No Review")
-                            .padding()
-                    }
-            }.navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
+                        
+                
+                    }.navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
+                
+                Text(self.pizzaPlace.review ?? "No Review")
+                    
+                    .multilineTextAlignment(.leading)
+                    .padding()
+                    .fixedSize(horizontal: false, vertical: true)
+
+        }
     }
 }
 
@@ -59,11 +73,11 @@ func getCoords(city: String) -> CLLocationCoordinate2D{
     case "Burlington":
         return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
     case "South Burlington":
-        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+        return CLLocationCoordinate2D(latitude:44.468288, longitude: -73.171593)
     case "Winooski":
-        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+        return CLLocationCoordinate2D(latitude:44.489648, longitude: -73.187087)
     case "Essex":
-        return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
+        return CLLocationCoordinate2D(latitude:44.490138, longitude: -73.114598)
     default :
         return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
     }

@@ -17,10 +17,11 @@ struct AddPizzaPlace: View {
     @State private var price = 2
     @State private var rating = 3
     @State private var review = ""
+    @State private var image: Data = .init(count: 0)
     
-    @State private var image: Image?
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
+    
     
     var cities = ["Burlington", "South Burlington", "Winooski", "Essex"]
 
@@ -42,11 +43,16 @@ struct AddPizzaPlace: View {
                     RatingView(rating: $rating)
                     TextField("Review", text: $review)
                     
-                    Button(action: {
-                        self.showingImagePicker = true
-                        
-                    }) {
-                        Image(systemName: "photo.fill")
+                    if self.image.count != 0 {
+                        Image(uiImage: UIImage(data: self.image)!)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Button(action: {
+                            self.showingImagePicker = true
+                        }) {
+                            Image(systemName: "photo.fill")
+                        }
                     }
                 }
                 
@@ -59,7 +65,13 @@ struct AddPizzaPlace: View {
                         newPlace.rating = Int16(self.rating)
                         newPlace.price = Int16(self.price)
                         newPlace.review = self.review
-
+                        newPlace.imageD = self.image
+                        if self.image.count == 0 {
+                            newPlace.imageD = UIImage(named: "pizza")!.pngData()!
+                        }
+                        
+                        
+                        
                         do {
                             try self.moc.save()
                         } catch {
@@ -67,14 +79,18 @@ struct AddPizzaPlace: View {
                         }
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                } 
+                }
             }.navigationBarTitle(Text("New Pizza"))
+            .sheet(isPresented: $showingImagePicker,
+                   onDismiss: loadImage){
+                    ImagePicker(image: self.$inputImage)
+            }
         }
     }
-    
     func loadImage() {
         guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
+        let data : Data = inputImage.pngData()!
+        image = data
     }
     
 }
