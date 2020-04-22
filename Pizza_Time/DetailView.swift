@@ -12,10 +12,11 @@ import CoreLocation
 
 struct DetailView: View {
     let pizzaPlace: PizzaPlace
-    
+    @Environment(\.managedObjectContext) var moc
     @State private var image : Data = .init(count: 0)
     
     var body: some View {
+        NavigationView {
             VStack{
                 MapView(coordinate: getCoords(city: self.pizzaPlace.city ?? "Burlington"))
                                     .edgesIgnoringSafeArea(.top)
@@ -39,7 +40,8 @@ struct DetailView: View {
                         .font(.largeTitle)
                         
                 
-                    }.navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name"), displayMode: .inline)
+                    }.navigationBarTitle(Text(pizzaPlace.name ?? "Unknown Name").font(.largeTitle), displayMode: .inline)
+                        
                 
                 Text(self.pizzaPlace.review ?? "No Review")
                     
@@ -47,6 +49,7 @@ struct DetailView: View {
                     .padding()
                     .fixedSize(horizontal: false, vertical: true)
 
+            }
         }
     }
 }
@@ -73,7 +76,7 @@ func getCoords(city: String) -> CLLocationCoordinate2D{
     case "Burlington":
         return CLLocationCoordinate2D(latitude:44.475990, longitude: -73.210999)
     case "South Burlington":
-        return CLLocationCoordinate2D(latitude:44.468288, longitude: -73.171593)
+        return CLLocationCoordinate2D(latitude:44.454040, longitude: -73.178900)
     case "Winooski":
         return CLLocationCoordinate2D(latitude:44.489648, longitude: -73.187087)
     case "Essex":
